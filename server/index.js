@@ -81,6 +81,74 @@ app.get('/', (req, res) => {
     res.json({ status: 'API is running', timestamp: new Date() });
 });
 
+// --- PRODUCT ROUTES ---
+
+// GET /api/products (Public)
+app.get('/api/products', async (req, res) => {
+    const products = await getProducts();
+    res.json(products);
+});
+
+// POST /api/products (Admin Only)
+app.post('/api/products', adminAuth, async (req, res) => {
+    try {
+        const newProduct = req.body;
+        const products = await getProducts();
+
+        // Auto-increment ID
+        const maxId = products.reduce((max, p) => p.id > max ? p.id : max, 0);
+        newProduct.id = maxId + 1;
+
+        products.push(newProduct);
+        await saveProducts(products);
+
+        res.status(201).json(newProduct);
+    } catch (error) {
+        console.error('Error adding product:', error);
+        res.status(500).json({ error: 'Failed to add product' });
+    }
+});
+
+// PUT /api/products/:id (Admin Only)
+app.put('/api/products/:id', adminAuth, async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const updatedData = req.body;
+        let products = await getProducts();
+
+        const index = products.findIndex(p => p.id === id);
+        if (index !== -1) {
+            products[index] = { ...products[index], ...updatedData, id }; // Ensure ID stays same
+            await saveProducts(products);
+            res.json(products[index]);
+        } else {
+            res.status(404).json({ error: 'Product not found' });
+        }
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ error: 'Failed to update product' });
+    }
+});
+
+// DELETE /api/products/:id (Admin Only)
+app.delete('/api/products/:id', adminAuth, async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        let products = await getProducts();
+
+        const filtered = products.filter(p => p.id !== id);
+        if (products.length !== filtered.length) {
+            await saveProducts(filtered);
+            res.json({ message: 'Product deleted' });
+        } else {
+            res.status(404).json({ error: 'Product not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ error: 'Failed to delete product' });
+    }
+});
+
 // --- ADMIN AUTH ROUTES ---
 
 // 1. Initial Login (Check Password)
