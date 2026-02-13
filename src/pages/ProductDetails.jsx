@@ -132,22 +132,49 @@ const ProductDetails = () => {
                             </div>
                         </div>
 
-                        {/* Variations */}
-                        {product.variations && (
-                            <div className="space-y-3">
-                                <label className="text-sm font-medium text-gray-300">Escolha o plano:</label>
-                                <div className="space-y-2">
+                        {/* Variations / Plans Selection */}
+                        {product.variations && product.variations.length > 0 && (
+                            <div className="space-y-4">
+                                <label className="text-sm font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                                    Escolha seu plano:
+                                </label>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     {product.variations.map(variation => (
                                         <div
                                             key={variation.id}
                                             onClick={() => setSelectedVariation(variation.id)}
-                                            className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${selectedVariation === variation.id
-                                                ? 'bg-cta/10 border-cta/50 ring-1 ring-cta/20'
-                                                : 'bg-surface border-border hover:border-gray-600'
+                                            className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 group ${selectedVariation === variation.id
+                                                    ? 'bg-primary/10 border-primary shadow-lg shadow-primary/20 scale-[1.02]'
+                                                    : 'bg-surface border-border hover:border-gray-500 hover:bg-surface/80'
                                                 }`}
                                         >
-                                            <span className="font-medium text-white">{variation.name}</span>
-                                            <span className="font-bold text-white">R$ {variation.price}</span>
+                                            {/* Selection Indicator */}
+                                            <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selectedVariation === variation.id
+                                                    ? 'border-primary bg-primary text-white'
+                                                    : 'border-gray-600 bg-transparent'
+                                                }`}>
+                                                {selectedVariation === variation.id && <Check size={12} strokeWidth={4} />}
+                                            </div>
+
+                                            <div className="flex flex-col h-full justify-between gap-2">
+                                                <div>
+                                                    <h3 className={`font-bold text-lg mb-1 ${selectedVariation === variation.id ? 'text-white' : 'text-gray-300'}`}>
+                                                        {variation.name}
+                                                    </h3>
+                                                    {/* Optional: Add description logic per variation if available */}
+                                                </div>
+
+                                                <div className="pt-3 border-t border-white/5 mt-1">
+                                                    <span className="text-sm text-gray-400">Total</span>
+                                                    <div className="flex items-baseline gap-1">
+                                                        <span className="text-xs text-primary font-bold">R$</span>
+                                                        <span className={`text-2xl font-bold tracking-tight ${selectedVariation === variation.id ? 'text-primary' : 'text-white'}`}>
+                                                            {parseFloat(variation.price).toFixed(2).replace('.', ',')}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
