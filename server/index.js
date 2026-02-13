@@ -3,11 +3,18 @@ import cors from 'cors';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
 const app = express();
 const port = 3000;
+
+// Security Configs
+const JWT_SECRET = process.env.JWT_SECRET || 'axis_hub_secure_key_2024';
+const ADMIN_HASH = '$2b$10$y8diRI5AS6CLfOGbVcdlluZvb5ElOD1sk4tTNBbWBOB0R2Y7cOH96'; // hash: admin123
 
 // Middleware
 app.use(cors());
@@ -15,11 +22,20 @@ app.use(express.json());
 
 // In-memory "Database"
 const orders = new Map();
+const pending2FA = new Map(); // tempId -> { code, expires }
+
+// Rate Limiting
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // Limit each IP to 5 requests per windowMs
+    message: 'Muitas tentativas de login. Tente novamente em 15 minutos.',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
 // Mercado Pago Configuration
-// WARNING: In production, ensure MP_ACCESS_TOKEN is set in .env
 const client = new MercadoPagoConfig({
-    accessToken: process.env.MP_ACCESS_TOKEN || 'TEST-8254823867664893-021310-0925232975932598-193498305' // Fallback for dev/demo if env not present, BUT SHOULD BE ENV
+    accessToken: process.env.MP_ACCESS_TOKEN || 'TEST-8254823867664893-021310-0925232975932598-193498305'
 });
 
 // Routes
@@ -45,14 +61,18 @@ async function saveProducts(products) {
     await fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 2));
 }
 
-// Middleware: Simple Admin Auth
+// Middleware: Admin Auth (JWT)
 const adminAuth = (req, res, next) => {
-    const token = req.headers['authorization'];
-    if (token === 'Bearer ADMIN_SECRET_123') { // Simple token for MVP
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+
+    if (!token) return res.status(401).json({ error: 'Acesso negado' });
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ error: 'Token inválido ou expirado' });
+        req.user = user;
         next();
-    } else {
-        res.status(401).json({ error: 'Unauthorized' });
-    }
+    });
 };
 
 // Root Route (Status Check)
@@ -60,67 +80,67 @@ app.get('/', (req, res) => {
     res.json({ status: 'API is running', timestamp: new Date() });
 });
 
-// --- PRODUCT ROUTES ---
+// --- ADMIN AUTH ROUTES ---
 
-// GET /api/products (Public)
-app.get('/api/products', async (req, res) => {
-    const products = await getProducts();
-    res.json(products);
-});
+// 1. Initial Login (Check Password)
+app.post('/api/admin/login', loginLimiter, async (req, res) => {
+    // Artificial Delay (Security against timing/brute force)
+    await new Promise(resolve => setTimeout(resolve, 800));
 
-// POST /api/products (Admin Only)
-app.post('/api/products', adminAuth, async (req, res) => {
-    const newProduct = req.body;
-    const products = await getProducts();
-
-    // Auto-increment ID if not provided (or simple max + 1)
-    const maxId = products.reduce((max, p) => p.id > max ? p.id : max, 0);
-    newProduct.id = maxId + 1;
-
-    products.push(newProduct);
-    await saveProducts(products);
-    res.status(201).json(newProduct);
-});
-
-// PUT /api/products/:id (Admin Only)
-app.put('/api/products/:id', adminAuth, async (req, res) => {
-    const id = parseInt(req.params.id);
-    const updatedData = req.body;
-    let products = await getProducts();
-
-    const index = products.findIndex(p => p.id === id);
-    if (index !== -1) {
-        products[index] = { ...products[index], ...updatedData, id }; // Ensure ID stays same
-        await saveProducts(products);
-        res.json(products[index]);
-    } else {
-        res.status(404).json({ error: 'Product not found' });
-    }
-});
-
-// DELETE /api/products/:id (Admin Only)
-app.delete('/api/products/:id', adminAuth, async (req, res) => {
-    const id = parseInt(req.params.id);
-    let products = await getProducts();
-
-    const filtered = products.filter(p => p.id !== id);
-    if (products.length !== filtered.length) {
-        await saveProducts(filtered);
-        res.json({ message: 'Product deleted' });
-    } else {
-        res.status(404).json({ error: 'Product not found' });
-    }
-});
-
-// ADMIN LOGIN (Simple)
-app.post('/api/admin/login', (req, res) => {
     const { password } = req.body;
-    // In a real app, hash this or use env var
-    if (password === 'admin123') {
-        res.json({ token: 'ADMIN_SECRET_123' });
-    } else {
-        res.status(401).json({ error: 'Invalid password' });
+
+    // Check Password Hash
+    const isValid = await bcrypt.compare(password, ADMIN_HASH);
+
+    if (!isValid) {
+        return res.status(401).json({ error: 'Credenciais inválidas' });
     }
+
+    // SIMPLIFIED LOGIN (2FA Disabled for now to fix UI first)
+    // Generate Token Directly
+    const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '2h' });
+
+    res.json({
+        requires2FA: false,
+        token,
+        message: 'Login realizado com sucesso.'
+    });
+
+    /*
+    // KEEPING 2FA LOGIC COMMENTED FOR FUTURE USE
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const tempId = crypto.randomUUID();
+    pending2FA.set(tempId, { code, expires: Date.now() + 5 * 60 * 1000 });
+    console.log(`[SECURITY] 2FA Code: ${code}`);
+    res.json({ requires2FA: true, tempId, message: 'Código enviado.' });
+    */
+});
+
+// 2. Verify 2FA & Issue Token
+app.post('/api/admin/verify-2fa', loginLimiter, async (req, res) => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const { tempId, code } = req.body;
+    const entry = pending2FA.get(tempId);
+
+    if (!entry) {
+        return res.status(400).json({ error: 'Sessão expirada. Faça login novamente.' });
+    }
+
+    if (Date.now() > entry.expires) {
+        pending2FA.delete(tempId); // Cleanup
+        return res.status(400).json({ error: 'Código expirado.' });
+    }
+
+    if (entry.code !== code) {
+        return res.status(400).json({ error: 'Código incorreto.' });
+    }
+
+    // Success! Issue Token
+    const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '2h' });
+    pending2FA.delete(tempId); // Cleanup used code
+
+    res.json({ token, message: 'Login realizado com sucesso.' });
 });
 
 

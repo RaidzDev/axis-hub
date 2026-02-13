@@ -38,7 +38,25 @@ export const api = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password })
         });
-        if (!response.ok) throw new Error('Falha no login');
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Falha no login');
+        }
+        return response.json();
+    },
+
+    adminVerify2FA: async (tempId, code) => {
+        const response = await fetch(`${api.baseUrl}/admin/verify-2fa`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tempId, code })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Falha na verificação');
+        }
         return response.json();
     },
 
