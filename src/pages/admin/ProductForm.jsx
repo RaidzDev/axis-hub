@@ -50,6 +50,17 @@ const ProductForm = () => {
         }));
     };
 
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData(prev => ({ ...prev, image: reader.result }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -70,20 +81,20 @@ const ProductForm = () => {
             }
             navigate('/admin/dashboard');
         } catch (error) {
-            alert('Erro ao salvar produto');
+            alert('Erro ao salvar produto. Verifique se a imagem não é muito grande.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-secondary-900 text-white p-6">
+        <div className="min-h-screen bg-[#0f172a] text-white p-6">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-8">
                     <button
                         onClick={() => navigate('/admin/dashboard')}
-                        className="bg-secondary-800 p-2 rounded-xl hover:bg-secondary-700 transition-colors"
+                        className="bg-slate-800 p-2 rounded-xl hover:bg-slate-700 transition-colors"
                     >
                         <ArrowLeft className="w-6 h-6" />
                     </button>
@@ -95,24 +106,24 @@ const ProductForm = () => {
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Left Column - Main Info */}
                     <div className="space-y-6">
-                        <div className="bg-secondary-800 p-6 rounded-2xl border border-secondary-700 space-y-4">
-                            <h3 className="text-lg font-bold mb-4 border-b border-secondary-700 pb-2">Informações Básicas</h3>
+                        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                            <h3 className="text-lg font-bold mb-4 border-b border-slate-700 pb-2 text-primary-400">Informações Básicas</h3>
 
                             <div>
-                                <label className="block text-secondary-400 mb-2 text-sm">Nome do Produto</label>
+                                <label className="block text-slate-400 mb-2 text-sm">Nome do Produto</label>
                                 <input
                                     type="text"
                                     name="name"
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full bg-secondary-900 border border-secondary-700 rounded-xl px-4 py-3 focus:border-primary-500 focus:outline-none"
+                                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-secondary-400 mb-2 text-sm">Preço (R$)</label>
+                                    <label className="block text-slate-400 mb-2 text-sm">Preço (R$)</label>
                                     <input
                                         type="text"
                                         name="price"
@@ -120,59 +131,59 @@ const ProductForm = () => {
                                         value={formData.price}
                                         onChange={handleChange}
                                         placeholder="29,90"
-                                        className="w-full bg-secondary-900 border border-secondary-700 rounded-xl px-4 py-3 focus:border-primary-500 focus:outline-none"
+                                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-secondary-400 mb-2 text-sm">Preço Original (R$)</label>
+                                    <label className="block text-slate-400 mb-2 text-sm">Preço Original (R$)</label>
                                     <input
                                         type="text"
                                         name="originalPrice"
                                         value={formData.originalPrice}
                                         onChange={handleChange}
                                         placeholder="49,90"
-                                        className="w-full bg-secondary-900 border border-secondary-700 rounded-xl px-4 py-3 focus:border-primary-500 focus:outline-none"
+                                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-secondary-400 mb-2 text-sm">Descrição</label>
+                                <label className="block text-slate-400 mb-2 text-sm">Descrição</label>
                                 <textarea
                                     name="description"
                                     rows="4"
                                     required
                                     value={formData.description}
                                     onChange={handleChange}
-                                    className="w-full bg-secondary-900 border border-secondary-700 rounded-xl px-4 py-3 focus:border-primary-500 focus:outline-none resize-none"
+                                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 resize-none"
                                 ></textarea>
                             </div>
                         </div>
 
-                        <div className="bg-secondary-800 p-6 rounded-2xl border border-secondary-700 space-y-4">
-                            <h3 className="text-lg font-bold mb-4 border-b border-secondary-700 pb-2">Configurações</h3>
+                        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                            <h3 className="text-lg font-bold mb-4 border-b border-slate-700 pb-2 text-primary-400">Configurações</h3>
 
                             <div className="flex gap-6">
-                                <label className="flex items-center gap-3 cursor-pointer">
+                                <label className="flex items-center gap-3 cursor-pointer group">
                                     <input
                                         type="checkbox"
                                         name="inStock"
                                         checked={formData.inStock}
                                         onChange={handleChange}
-                                        className="w-5 h-5 rounded border-secondary-600 bg-secondary-900 text-primary-500 focus:ring-primary-500"
+                                        className="w-5 h-5 rounded border-slate-600 bg-slate-900 text-primary-500 focus:ring-primary-500"
                                     />
-                                    <span className="text-secondary-200">Em Estoque</span>
+                                    <span className="text-slate-200 group-hover:text-white transition-colors">Em Estoque</span>
                                 </label>
 
-                                <label className="flex items-center gap-3 cursor-pointer">
+                                <label className="flex items-center gap-3 cursor-pointer group">
                                     <input
                                         type="checkbox"
                                         name="onSale"
                                         checked={formData.onSale}
                                         onChange={handleChange}
-                                        className="w-5 h-5 rounded border-secondary-600 bg-secondary-900 text-primary-500 focus:ring-primary-500"
+                                        className="w-5 h-5 rounded border-slate-600 bg-slate-900 text-primary-500 focus:ring-primary-500"
                                     />
-                                    <span className="text-secondary-200">Em Promoção</span>
+                                    <span className="text-slate-200 group-hover:text-white transition-colors">Em Promoção</span>
                                 </label>
                             </div>
                         </div>
@@ -180,50 +191,63 @@ const ProductForm = () => {
 
                     {/* Right Column - Media & Features */}
                     <div className="space-y-6">
-                        <div className="bg-secondary-800 p-6 rounded-2xl border border-secondary-700 space-y-4">
-                            <h3 className="text-lg font-bold mb-4 border-b border-secondary-700 pb-2">Imagem</h3>
+                        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                            <h3 className="text-lg font-bold mb-4 border-b border-slate-700 pb-2 text-primary-400">Imagem do Produto</h3>
 
-                            <div>
-                                <label className="block text-secondary-400 mb-2 text-sm">URL da Imagem</label>
-                                <div className="flex gap-2">
-                                    <div className="bg-secondary-900 p-3 rounded-xl">
-                                        <ImageIcon className="text-secondary-500" />
-                                    </div>
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-slate-400 mb-2 text-sm">Upload do Computador</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageUpload}
+                                        className="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-600 file:text-white hover:file:bg-primary-700 transition-all cursor-pointer"
+                                    />
+                                </div>
+
+                                <div className="relative flex items-center py-2">
+                                    <div className="flex-grow border-t border-slate-700"></div>
+                                    <span className="flex-shrink mx-4 text-slate-500 text-xs uppercase">ou URL externa</span>
+                                    <div className="flex-grow border-t border-slate-700"></div>
+                                </div>
+
+                                <div>
                                     <input
                                         type="url"
                                         name="image"
-                                        required
-                                        value={formData.image}
+                                        value={formData.image && !formData.image.startsWith('data:') ? formData.image : ''}
                                         onChange={handleChange}
-                                        placeholder="https://..."
-                                        className="w-full bg-secondary-900 border border-secondary-700 rounded-xl px-4 py-3 focus:border-primary-500 focus:outline-none"
+                                        placeholder="https://exemplo.com/imagem.jpg"
+                                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none"
                                     />
                                 </div>
                             </div>
 
                             {/* Image Preview */}
                             {formData.image && (
-                                <div className="mt-4 aspect-video rounded-xl overflow-hidden border border-secondary-700 bg-secondary-900">
+                                <div className="mt-4 aspect-video rounded-xl overflow-hidden border border-slate-700 bg-slate-900 relative group">
                                     <img
                                         src={formData.image}
                                         alt="Preview"
                                         className="w-full h-full object-cover"
-                                        onError={(e) => e.target.style.display = 'none'}
                                     />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <p className="text-xs font-bold text-white uppercase tracking-wider">Preview da Imagem</p>
+                                    </div>
                                 </div>
                             )}
                         </div>
 
-                        <div className="bg-secondary-800 p-6 rounded-2xl border border-secondary-700 space-y-4">
-                            <h3 className="text-lg font-bold mb-4 border-b border-secondary-700 pb-2">Características (Features)</h3>
-                            <p className="text-xs text-secondary-400">Uma por linha</p>
+                        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                            <h3 className="text-lg font-bold mb-4 border-b border-slate-700 pb-2 text-primary-400">Características (Features)</h3>
+                            <p className="text-xs text-slate-400">Escreva uma característica por linha</p>
 
                             <textarea
                                 value={featuresInput}
                                 onChange={(e) => setFeaturesInput(e.target.value)}
-                                rows="6"
-                                placeholder="Suporte 24/7&#10;Garantia de 30 dias&#10;..."
-                                className="w-full bg-secondary-900 border border-secondary-700 rounded-xl px-4 py-3 focus:border-primary-500 focus:outline-none resize-none font-mono text-sm"
+                                rows="5"
+                                placeholder="Entrega imediata&#10;Garantia de 30 dias&#10;Suporte 24/7"
+                                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-primary-500 focus:outline-none resize-none font-mono text-sm"
                             ></textarea>
                         </div>
 
