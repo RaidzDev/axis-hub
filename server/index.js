@@ -18,7 +18,8 @@ const ADMIN_HASH = '$2b$10$y8diRI5AS6CLfOGbVcdlluZvb5ElOD1sk4tTNBbWBOB0R2Y7cOH96
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // In-memory "Database"
 const orders = new Map();
