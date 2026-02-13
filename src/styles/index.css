@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #0E1117;
+    --bg-surface: #111827;
+    --text-primary: #F9FAFB;
+    --text-secondary: #9CA3AF;
+  }
+
+  html {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    @apply antialiased;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--bg-surface);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-cta hover:bg-yellow-500 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-lg hover:shadow-orange-500/20 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply border border-blue-500/30 text-blue-400 hover:bg-blue-500/10 font-bold px-6 py-3 rounded-xl transition-all active:scale-95;
+  }
+
+  .card-surface {
+    @apply bg-surface border border-border rounded-xl;
+  }
+
+  .glass-header {
+    background: rgba(14, 17, 23, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}

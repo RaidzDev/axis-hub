@@ -1,0 +1,31 @@
+
+> axis-hub@0.0.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 28 modules transformed.
+[31m✗[39m Build failed in 178ms
+[31merror during build:
+[31m[vite:esbuild] Transform failed with 1 error:
+F:/PROJETOS - SITES/Axis Hub/src/components/Hero.jsx:42:101: ERROR: Expected identifier but found "-"[31m
+file: [36mF:/PROJETOS - SITES/Axis Hub/src/components/Hero.jsx:42:101[31m
+[33m
+[33mExpected identifier but found "-"[33m
+40 |                          Seu Hub de <br />
+41 |                          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600"
+42 |  ...groundImage: 'linear-gradient(to right, #60A5FA, #2563EB)', - webkitBackgroundClip: 'text', -webkitTextFillColor: ...
+   |                                                                 ^
+43 |                          Licenças Digitais
+44 |                      </span>
+[31m
+    at failureErrorWithLog (F:\PROJETOS - SITES\Axis Hub\node_modules\esbuild\lib\main.js:1467:15)
+    at F:\PROJETOS - SITES\Axis Hub\node_modules\esbuild\lib\main.js:736:50
+    at responseCallbacks.<computed> (F:\PROJETOS - SITES\Axis Hub\node_modules\esbuild\lib\main.js:603:9)
+    at handleIncomingPacket (F:\PROJETOS - SITES\Axis Hub\node_modules\esbuild\lib\main.js:658:12)
+    at Socket.readFromStdout (F:\PROJETOS - SITES\Axis Hub\node_modules\esbuild\lib\main.js:581:7)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)[39m
