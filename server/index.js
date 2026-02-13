@@ -24,6 +24,11 @@ const client = new MercadoPagoConfig({
 
 // Routes
 
+// Root Route (Status Check)
+app.get('/', (req, res) => {
+    res.json({ status: 'API is running', timestamp: new Date() });
+});
+
 // (A) Create Order
 app.post('/api/orders', (req, res) => {
     try {
