@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
-import { Lock } from 'lucide-react';
+import { Lock, Eye, EyeOff } from 'lucide-react';
 
 const AdminLogin = () => {
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -31,14 +32,21 @@ const AdminLogin = () => {
                 <h2 className="text-2xl font-bold text-white text-center mb-6">Acesso Administrativo</h2>
 
                 <form onSubmit={handleLogin} className="space-y-4">
-                    <div>
+                    <div className="relative">
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Senha do Admin"
-                            className="w-full bg-secondary-900 border border-secondary-700 rounded-xl px-4 py-3 text-white placeholder-secondary-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors shadow-inner"
+                            className="w-full bg-secondary-900 border border-secondary-700 rounded-xl px-4 py-3 text-white placeholder-secondary-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors shadow-inner pr-12"
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-secondary-400 hover:text-primary-500 transition-colors focus:outline-none"
+                        >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
                     </div>
 
                     {error && (

@@ -58,28 +58,37 @@ const Header = () => {
                         <input
                             type="text"
                             placeholder="Encontre sua licença ou assinatura..."
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    alert('Busca em desenvolvimento: ' + e.target.value);
+                                }
+                            }}
                             className="w-full h-11 bg-surface/80 border border-t border-border rounded-full pl-12 pr-4 text-sm text-gray-200 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-gray-500"
                         />
                     </div>
 
                     {/* Navigation - Desktop */}
                     <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-secondary">
-                        <a href="#categorias" onClick={(e) => handleNavClick(e, 'categorias')} className="hover:text-white transition-colors">Categorias</a>
+                        <Link to="/#categorias" onClick={(e) => handleNavClick(e, 'categorias')} className="hover:text-white transition-colors">Categorias</Link>
+                        <Link to="/" className="hover:text-white transition-colors">Ver Produtos</Link>
+                        <Link to="/#assinaturas" className="hover:text-white transition-colors">Assinaturas</Link>
                         <a href="#como-funciona" onClick={(e) => handleNavClick(e, 'como-funciona')} className="hover:text-white transition-colors">Como funciona</a>
                         <a href="#suporte" onClick={(e) => handleNavClick(e, 'suporte')} className="hover:text-white transition-colors">Suporte</a>
-                        <a href="#faq" onClick={(e) => handleNavClick(e, 'faq')} className="hover:text-white transition-colors">FAQ</a>
                     </nav>
 
                     {/* Actions */}
                     <div className="flex items-center gap-4 shrink-0">
-                        <button className="relative p-2 rounded-full hover:bg-white/5 text-gray-300 transition-colors" aria-label="Carrinho">
+                        <Link to="/checkout" className="relative p-2 rounded-full hover:bg-white/5 text-gray-300 transition-colors" aria-label="Carrinho">
                             <ShoppingCart size={22} />
+                            {/* Example cart count - logic to come from context ideally */}
                             <span className="absolute -top-1 -right-1 w-4 h-4 bg-cta rounded-full text-[10px] flex items-center justify-center font-bold text-white shadow-sm">
                                 0
                             </span>
-                        </button>
+                        </Link>
 
-                        <button className="hidden sm:flex items-center gap-2 pl-1 pr-3 py-1 rounded-full border border-border bg-surface/50 hover:bg-surface hover:border-white/10 transition-all group">
+                        <button
+                            onClick={() => navigate('/admin/login')}
+                            className="hidden sm:flex items-center gap-2 pl-1 pr-3 py-1 rounded-full border border-border bg-surface/50 hover:bg-surface hover:border-white/10 transition-all group">
                             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-700 to-gray-600 flex items-center justify-center">
                                 <User size={16} className="text-gray-200" />
                             </div>
@@ -106,15 +115,21 @@ const Header = () => {
                             <input
                                 type="text"
                                 placeholder="Buscar produtos..."
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        alert('Busca em desenvolvimento: ' + e.target.value);
+                                    }
+                                }}
                                 className="w-full bg-surface border border-border rounded-lg py-3 pl-10 pr-4 text-gray-200 outline-none focus:border-primary"
                             />
                         </div>
                         <nav className="flex flex-col gap-2 text-lg font-medium text-gray-300">
+                            <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="py-3 border-b border-border hover:text-white hover:pl-2 transition-all">Ver Produtos</Link>
                             <a href="#categorias" onClick={(e) => handleNavClick(e, 'categorias')} className="py-3 border-b border-border hover:text-white hover:pl-2 transition-all">Categorias</a>
+                            <a href="#assinaturas" className="py-3 border-b border-border hover:text-white hover:pl-2 transition-all">Assinaturas</a>
                             <a href="#como-funciona" onClick={(e) => handleNavClick(e, 'como-funciona')} className="py-3 border-b border-border hover:text-white hover:pl-2 transition-all">Como funciona</a>
                             <a href="#suporte" onClick={(e) => handleNavClick(e, 'suporte')} className="py-3 border-b border-border hover:text-white hover:pl-2 transition-all">Suporte</a>
-                            <a href="#faq" onClick={(e) => handleNavClick(e, 'faq')} className="py-3 border-b border-border hover:text-white hover:pl-2 transition-all">FAQ</a>
-                            <a href="/login" className="py-3 text-primary hover:text-primary-hover font-bold mt-2" onClick={() => setIsMobileMenuOpen(false)}>Fazer Login</a>
+                            <Link to="/admin/login" className="py-3 text-primary hover:text-primary-hover font-bold mt-2" onClick={() => setIsMobileMenuOpen(false)}>Minha Conta / Login</Link>
                         </nav>
                     </div>
                 </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import Benefits from '../components/Benefits';
+import HowItWorks from '../components/HowItWorks';
 import CategoriesSection from '../components/CategoriesSection';
 import ProductsSection from '../components/ProductsSection';
 import SupportSection from '../components/SupportSection';
@@ -29,6 +30,8 @@ const Home = () => {
             <main>
                 <Hero />
                 <Benefits />
+                <HowItWorks />
+                <div id="assinaturas" className="scroll-mt-24"></div>
                 <CategoriesSection />
                 <ProductsSection products={products} />
                 <SupportSection />

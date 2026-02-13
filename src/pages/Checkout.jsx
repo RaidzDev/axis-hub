@@ -55,6 +55,12 @@ const Checkout = () => {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(payerEmail)) {
+            alert('Por favor, insira um e-mail válido.');
+            return;
+        }
+
         setIsLoading(true);
         try {
             let targetOrderId = orderIdParam;
