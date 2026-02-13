@@ -88,176 +88,218 @@ const ProductForm = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0f172a] text-white p-6">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-[#0E1117] text-white p-6 relative overflow-hidden">
+            {/* Background Effects */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-900/10 via-[#0E1117] to-[#0E1117] pointer-events-none"></div>
+
+            <div className="max-w-5xl mx-auto relative z-10">
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-8">
                     <button
                         onClick={() => navigate('/admin/dashboard')}
-                        className="bg-slate-800 p-2 rounded-xl hover:bg-slate-700 transition-colors"
+                        className="bg-[#1F2937] p-3 rounded-xl hover:bg-[#374151] transition-all text-gray-400 hover:text-white border border-gray-700 hover:border-gray-600 shadow-lg active:scale-95"
                     >
-                        <ArrowLeft className="w-6 h-6" />
+                        <ArrowLeft className="w-5 h-5" />
                     </button>
-                    <h1 className="text-2xl font-bold">
-                        {isEditing ? 'Editar Produto' : 'Novo Produto'}
-                    </h1>
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight text-white mb-1">
+                            {isEditing ? 'Editar Produto' : 'Novo Produto'}
+                        </h1>
+                        <p className="text-gray-400 text-sm">
+                            Preencha os dados abaixo para {isEditing ? 'atualizar' : 'cadastrar'} um item no catálogo.
+                        </p>
+                    </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Left Column - Main Info */}
-                    <div className="space-y-6">
-                        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
-                            <h3 className="text-lg font-bold mb-4 border-b border-slate-700 pb-2 text-primary-400">Informações Básicas</h3>
-
-                            <div>
-                                <label className="block text-slate-400 mb-2 text-sm">Nome do Produto</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    required
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
-                                />
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Left Column - Main Info (2 cols wide) */}
+                    <div className="lg:col-span-2 space-y-6">
+                        <div className="bg-[#111827] p-8 rounded-3xl border border-white/5 shadow-xl">
+                            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-800">
+                                <div className="w-1 h-6 bg-blue-500 rounded-full"></div>
+                                <h3 className="text-lg font-bold text-gray-200">Informações Básicas</h3>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-6">
                                 <div>
-                                    <label className="block text-slate-400 mb-2 text-sm">Preço (R$)</label>
+                                    <label className="block text-gray-400 mb-2 text-xs font-semibold uppercase tracking-wider ml-1">Nome do Produto</label>
                                     <input
                                         type="text"
-                                        name="price"
+                                        name="name"
                                         required
-                                        value={formData.price}
+                                        value={formData.name}
                                         onChange={handleChange}
-                                        placeholder="29,90"
-                                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                                        className="w-full bg-[#0B0D12] border border-gray-700 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all shadow-inner"
+                                        placeholder="Ex: Licença Vitalícia Premium"
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-slate-400 mb-2 text-sm">Preço Original (R$)</label>
-                                    <input
-                                        type="text"
-                                        name="originalPrice"
-                                        value={formData.originalPrice}
-                                        onChange={handleChange}
-                                        placeholder="49,90"
-                                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
-                                    />
-                                </div>
-                            </div>
 
-                            <div>
-                                <label className="block text-slate-400 mb-2 text-sm">Descrição</label>
-                                <textarea
-                                    name="description"
-                                    rows="4"
-                                    required
-                                    value={formData.description}
-                                    onChange={handleChange}
-                                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 resize-none"
-                                ></textarea>
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-gray-400 mb-2 text-xs font-semibold uppercase tracking-wider ml-1">Preço (R$)</label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
+                                            <input
+                                                type="text"
+                                                name="price"
+                                                required
+                                                value={formData.price}
+                                                onChange={handleChange}
+                                                placeholder="0,00"
+                                                className="w-full bg-[#0B0D12] border border-gray-700 rounded-xl pl-10 pr-4 py-3.5 text-white placeholder-gray-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-mono shadow-inner"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-400 mb-2 text-xs font-semibold uppercase tracking-wider ml-1">Preço Original (R$)</label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
+                                            <input
+                                                type="text"
+                                                name="originalPrice"
+                                                value={formData.originalPrice}
+                                                onChange={handleChange}
+                                                placeholder="0,00"
+                                                className="w-full bg-[#0B0D12] border border-gray-700 rounded-xl pl-10 pr-4 py-3.5 text-white placeholder-gray-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-mono shadow-inner"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-gray-400 mb-2 text-xs font-semibold uppercase tracking-wider ml-1">Descrição Detalhada</label>
+                                    <textarea
+                                        name="description"
+                                        rows="5"
+                                        required
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        className="w-full bg-[#0B0D12] border border-gray-700 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all shadow-inner resize-none leading-relaxed"
+                                        placeholder="Descreva as principais funcionalidades e benefícios deste produto..."
+                                    ></textarea>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
-                            <h3 className="text-lg font-bold mb-4 border-b border-slate-700 pb-2 text-primary-400">Configurações</h3>
-
-                            <div className="flex gap-6">
-                                <label className="flex items-center gap-3 cursor-pointer group">
-                                    <input
-                                        type="checkbox"
-                                        name="inStock"
-                                        checked={formData.inStock}
-                                        onChange={handleChange}
-                                        className="w-5 h-5 rounded border-slate-600 bg-slate-900 text-primary-500 focus:ring-primary-500"
-                                    />
-                                    <span className="text-slate-200 group-hover:text-white transition-colors">Em Estoque</span>
-                                </label>
-
-                                <label className="flex items-center gap-3 cursor-pointer group">
-                                    <input
-                                        type="checkbox"
-                                        name="onSale"
-                                        checked={formData.onSale}
-                                        onChange={handleChange}
-                                        className="w-5 h-5 rounded border-slate-600 bg-slate-900 text-primary-500 focus:ring-primary-500"
-                                    />
-                                    <span className="text-slate-200 group-hover:text-white transition-colors">Em Promoção</span>
-                                </label>
+                        <div className="bg-[#111827] p-8 rounded-3xl border border-white/5 shadow-xl">
+                            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-800">
+                                <div className="w-1 h-6 bg-purple-500 rounded-full"></div>
+                                <h3 className="text-lg font-bold text-gray-200">Características (Features)</h3>
                             </div>
+                            <p className="text-xs text-gray-500 mb-3 ml-1">Escreva uma característica por linha. Elas aparecerão como lista no card do produto.</p>
+
+                            <textarea
+                                value={featuresInput}
+                                onChange={(e) => setFeaturesInput(e.target.value)}
+                                rows="6"
+                                placeholder="✓ Entrega Imediata&#10;✓ Suporte 24/7&#10;✓ Garantia Estendida"
+                                className="w-full bg-[#0B0D12] border border-gray-700 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all shadow-inner resize-none font-mono text-sm leading-relaxed"
+                            ></textarea>
                         </div>
                     </div>
 
-                    {/* Right Column - Media & Features */}
+                    {/* Right Column - Media & Settings (1 col wide) */}
                     <div className="space-y-6">
-                        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
-                            <h3 className="text-lg font-bold mb-4 border-b border-slate-700 pb-2 text-primary-400">Imagem do Produto</h3>
+                        {/* Status Card */}
+                        <div className="bg-[#111827] p-6 rounded-3xl border border-white/5 shadow-xl">
+                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">Status & Visibilidade</h3>
+
+                            <div className="space-y-3">
+                                <label className="flex items-center justify-between p-3 rounded-xl bg-[#0B0D12] border border-gray-800 cursor-pointer hover:border-gray-700 transition-colors group">
+                                    <span className="text-gray-300 font-medium group-hover:text-white transition-colors">Em Estoque</span>
+                                    <div className="relative inline-block w-12 mr-2 align-middle select-none">
+                                        <input
+                                            type="checkbox"
+                                            name="inStock"
+                                            checked={formData.inStock}
+                                            onChange={handleChange}
+                                            className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 checked:right-0 right-6 checked:border-blue-500"
+                                        />
+                                        <div className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer transition-colors duration-300 ${formData.inStock ? 'bg-blue-600' : 'bg-gray-700'}`}></div>
+                                    </div>
+                                </label>
+
+                                <label className="flex items-center justify-between p-3 rounded-xl bg-[#0B0D12] border border-gray-800 cursor-pointer hover:border-gray-700 transition-colors group">
+                                    <span className="text-gray-300 font-medium group-hover:text-white transition-colors">Promoção Ativa</span>
+                                    <div className="relative inline-block w-12 mr-2 align-middle select-none">
+                                        <input
+                                            type="checkbox"
+                                            name="onSale"
+                                            checked={formData.onSale}
+                                            onChange={handleChange}
+                                            className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 checked:right-0 right-6 checked:border-yellow-500"
+                                        />
+                                        <div className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer transition-colors duration-300 ${formData.onSale ? 'bg-yellow-600' : 'bg-gray-700'}`}></div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* Image Card */}
+                        <div className="bg-[#111827] p-6 rounded-3xl border border-white/5 shadow-xl">
+                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">Imagem de Capa</h3>
 
                             <div className="space-y-4">
-                                <div>
-                                    <label className="block text-slate-400 mb-2 text-sm">Upload do Computador</label>
+                                {/* Image Preview Block */}
+                                <div className={`aspect-video rounded-2xl overflow-hidden border-2 border-dashed relative group transition-all ${formData.image ? 'border-blue-500/50 bg-[#0B0D12]' : 'border-gray-700 bg-[#0B0D12] hover:border-gray-600'
+                                    }`}>
+                                    {formData.image ? (
+                                        <>
+                                            <img
+                                                src={formData.image}
+                                                alt="Preview"
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white">
+                                                <ImageIcon className="w-8 h-8 mb-2 opacity-80" />
+                                                <span className="text-xs font-bold uppercase tracking-wider">Alterar Imagem</span>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 group-hover:text-gray-400 transition-colors">
+                                            <div className="bg-gray-800/50 p-4 rounded-full mb-2">
+                                                <ImageIcon className="w-6 h-6" />
+                                            </div>
+                                            <span className="text-xs font-semibold">Nenhuma imagem selecionada</span>
+                                        </div>
+                                    )}
+
+                                    {/* Invisible File Input Overlay */}
                                     <input
                                         type="file"
                                         accept="image/*"
                                         onChange={handleImageUpload}
-                                        className="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer"
+                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                        title="Clique para fazer upload"
                                     />
                                 </div>
 
-                                <div className="relative flex items-center py-2">
-                                    <div className="flex-grow border-t border-slate-700"></div>
-                                    <span className="flex-shrink mx-4 text-slate-500 text-xs uppercase">ou URL externa</span>
-                                    <div className="flex-grow border-t border-slate-700"></div>
+                                <div className="text-center">
+                                    <span className="text-xs text-gray-500 uppercase font-bold tracking-widest px-2 bg-[#111827] relative z-10">OU</span>
+                                    <div className="border-t border-gray-800 -mt-2.5 mb-4"></div>
                                 </div>
 
                                 <div>
+                                    <label className="block text-gray-500 mb-1.5 text-[10px] font-bold uppercase tracking-wider">URL da Imagem</label>
                                     <input
                                         type="url"
                                         name="image"
                                         value={formData.image && !formData.image.startsWith('data:') ? formData.image : ''}
                                         onChange={handleChange}
-                                        placeholder="https://exemplo.com/imagem.jpg"
-                                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none"
+                                        placeholder="https://..."
+                                        className="w-full bg-[#0B0D12] text-xs border border-gray-700 rounded-lg px-3 py-2.5 text-white placeholder-gray-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-mono"
                                     />
                                 </div>
                             </div>
-
-                            {/* Image Preview */}
-                            {formData.image && (
-                                <div className="mt-4 aspect-video rounded-xl overflow-hidden border border-slate-700 bg-slate-900 relative group">
-                                    <img
-                                        src={formData.image}
-                                        alt="Preview"
-                                        className="w-full h-full object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <p className="text-xs font-bold text-white uppercase tracking-wider">Preview da Imagem</p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
-                            <h3 className="text-lg font-bold mb-4 border-b border-slate-700 pb-2 text-primary-400">Características (Features)</h3>
-                            <p className="text-xs text-slate-400">Escreva uma característica por linha</p>
-
-                            <textarea
-                                value={featuresInput}
-                                onChange={(e) => setFeaturesInput(e.target.value)}
-                                rows="5"
-                                placeholder="Entrega imediata&#10;Garantia de 30 dias&#10;Suporte 24/7"
-                                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-primary-500 focus:outline-none resize-none font-mono text-sm"
-                            ></textarea>
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg shadow-primary-900/20"
+                            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-2xl transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20 disabled:opacity-50 disabled:cursor-not-allowed mt-4 border border-blue-500/50"
                         >
                             <Save className="w-5 h-5" />
-                            {loading ? 'Salvando...' : 'Salvar Produto'}
+                            {loading ? 'Salvando...' : 'Salvar Alterações'}
                         </button>
                     </div>
                 </form>
