@@ -23,11 +23,106 @@ const client = new MercadoPagoConfig({
 });
 
 // Routes
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PRODUCTS_FILE = path.join(__dirname, 'data', 'products.json');
+
+// Helper to Read/Write Products
+async function getProducts() {
+    try {
+        const data = await fs.readFile(PRODUCTS_FILE, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        return [];
+    }
+}
+
+async function saveProducts(products) {
+    await fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 2));
+}
+
+// Middleware: Simple Admin Auth
+const adminAuth = (req, res, next) => {
+    const token = req.headers['authorization'];
+    if (token === 'Bearer ADMIN_SECRET_123') { // Simple token for MVP
+        next();
+    } else {
+        res.status(401).json({ error: 'Unauthorized' });
+    }
+};
 
 // Root Route (Status Check)
 app.get('/', (req, res) => {
     res.json({ status: 'API is running', timestamp: new Date() });
 });
+
+// --- PRODUCT ROUTES ---
+
+// GET /api/products (Public)
+app.get('/api/products', async (req, res) => {
+    const products = await getProducts();
+    res.json(products);
+});
+
+// POST /api/products (Admin Only)
+app.post('/api/products', adminAuth, async (req, res) => {
+    const newProduct = req.body;
+    const products = await getProducts();
+
+    // Auto-increment ID if not provided (or simple max + 1)
+    const maxId = products.reduce((max, p) => p.id > max ? p.id : max, 0);
+    newProduct.id = maxId + 1;
+
+    products.push(newProduct);
+    await saveProducts(products);
+    res.status(201).json(newProduct);
+});
+
+// PUT /api/products/:id (Admin Only)
+app.put('/api/products/:id', adminAuth, async (req, res) => {
+    const id = parseInt(req.params.id);
+    const updatedData = req.body;
+    let products = await getProducts();
+
+    const index = products.findIndex(p => p.id === id);
+    if (index !== -1) {
+        products[index] = { ...products[index], ...updatedData, id }; // Ensure ID stays same
+        await saveProducts(products);
+        res.json(products[index]);
+    } else {
+        res.status(404).json({ error: 'Product not found' });
+    }
+});
+
+// DELETE /api/products/:id (Admin Only)
+app.delete('/api/products/:id', adminAuth, async (req, res) => {
+    const id = parseInt(req.params.id);
+    let products = await getProducts();
+
+    const filtered = products.filter(p => p.id !== id);
+    if (products.length !== filtered.length) {
+        await saveProducts(filtered);
+        res.json({ message: 'Product deleted' });
+    } else {
+        res.status(404).json({ error: 'Product not found' });
+    }
+});
+
+// ADMIN LOGIN (Simple)
+app.post('/api/admin/login', (req, res) => {
+    const { password } = req.body;
+    // In a real app, hash this or use env var
+    if (password === 'admin123') {
+        res.json({ token: 'ADMIN_SECRET_123' });
+    } else {
+        res.status(401).json({ error: 'Invalid password' });
+    }
+});
+
 
 // (A) Create Order
 app.post('/api/orders', (req, res) => {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { api } from '../services/api';
 import Header from '../components/Header';
@@ -12,20 +11,29 @@ const ProductDetails = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedVariation, setSelectedVariation] = useState(null);
+    const [allProducts, setAllProducts] = useState([]); // Needed for "Similar Products"
 
     const { buyNow, addToCart } = useCart();
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Find product by ID (ensure type match)
-        const found = products.find(p => p.id == id);
-        if (found) {
-            setProduct(found);
-            // Default select first variation if exists
-            if (found.variations && found.variations.length > 0) {
-                setSelectedVariation(found.variations[0].id);
+        const loadData = async () => {
+            try {
+                const products = await api.getProducts();
+                setAllProducts(products);
+
+                const found = products.find(p => p.id == id);
+                if (found) {
+                    setProduct(found);
+                    if (found.variations && found.variations.length > 0) {
+                        setSelectedVariation(found.variations[0].id);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading product:', error);
             }
-        }
+        };
+        loadData();
         window.scrollTo(0, 0);
     }, [id]);
 
@@ -72,7 +80,7 @@ const ProductDetails = () => {
         return <div className="min-h-screen bg-background text-white flex items-center justify-center">Carregando...</div>;
     }
 
-    const similarProducts = products.filter(p => p.id != id).slice(0, 4);
+    const similarProducts = allProducts.filter(p => p.id != id).slice(0, 4);
 
     return (
         <div className="min-h-screen bg-background text-white">

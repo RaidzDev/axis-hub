@@ -1,0 +1,176 @@
+[
+  {
+    "id": 1,
+    "name": "ChatGPT Plus (Conta Compartilhada)",
+    "price": "29,90",
+    "originalPrice": "49,90",
+    "inStock": true,
+    "onSale": true,
+    "image": "https://images.unsplash.com/photo-1695504236952-ec32976d8b02?q=80&w=2070&auto=format&fit=crop",
+    "description": "Acesse o modelo GPT-4 mais avançado com a nossa conta compartilhada premium. Ideal para quem busca produtividade máxima, respostas mais rápidas e acesso a plugins exclusivos.",
+    "features": [
+      "Acesso ao GPT-4 e GPT-4o",
+      "Tempo de resposta ultra-rápido",
+      "Acesso a análise de dados e DALL-E 3",
+      "Suporte prioritário"
+    ],
+    "variations": [
+      {
+        "id": "1m",
+        "name": "1 Mês",
+        "price": "29,90"
+      },
+      {
+        "id": "3m",
+        "name": "3 Meses (Desconto)",
+        "price": "79,90"
+      },
+      {
+        "id": "6m",
+        "name": "6 Meses (Super Oferta)",
+        "price": "149,90"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "CapCut Pro (Assinatura 1 Ano)",
+    "price": "45,00",
+    "originalPrice": "89,90",
+    "inStock": true,
+    "onSale": true,
+    "image": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1974&auto=format&fit=crop",
+    "description": "Edite vídeos como um profissional com o CapCut Pro. Remova fundos automaticamente, use efeitos premium e exporte em 4K sem marca d'água.",
+    "features": [
+      "Sem marca d'água",
+      "Efeitos e transições Pro",
+      "Armazenamento na nuvem",
+      "Legendas automáticas ilimitadas"
+    ],
+    "variations": [
+      {
+        "id": "1y",
+        "name": "1 Ano - Acesso Pessoal",
+        "price": "45,00"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Canva Pro (Vitalício Privado)",
+    "price": "19,90",
+    "originalPrice": "39,90",
+    "inStock": true,
+    "onSale": true,
+    "image": "https://images.unsplash.com/photo-1611162616475-46b635cb6868?q=80&w=1974&auto=format&fit=crop",
+    "description": "Crie designs incríveis com acesso ilimitado a milhões de fotos, fontes e templates premium do Canva.",
+    "features": [
+      "Brand Kit ilimitado",
+      "Redimensionamento mágico",
+      "Removedor de fundo",
+      "Acesso vitalício à turma"
+    ],
+    "variations": [
+      {
+        "id": "life",
+        "name": "Acesso Vitalício",
+        "price": "19,90"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Spotify Premium (3 Meses)",
+    "price": "15,00",
+    "originalPrice": "29,90",
+    "inStock": true,
+    "onSale": false,
+    "image": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1974&auto=format&fit=crop",
+    "description": "Música sem anúncios, modo offline e qualidade de som superior. Aproveite 3 meses de Spotify Premium em sua própria conta.",
+    "features": [
+      "Sem anúncios",
+      "Ouça offline",
+      "Skips ilimitados",
+      "Qualidade de áudio extrema"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Netflix 4K (30 Dias)",
+    "price": "12,90",
+    "originalPrice": "25,90",
+    "inStock": true,
+    "onSale": true,
+    "image": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2069&auto=format&fit=crop",
+    "description": "Assista a filmes e séries em 4K Ultra HD. Perfil exclusivo com PIN de segurança.",
+    "features": [
+      "Qualidade 4K Ultra HD",
+      "Perfil com PIN",
+      "Sem quedas",
+      "Suporte 24/7"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Windows 11 Pro Key Vitalícia",
+    "price": "35,00",
+    "originalPrice": "120,00",
+    "inStock": true,
+    "onSale": true,
+    "image": "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=2042&auto=format&fit=crop",
+    "description": "Chave de ativação original e vitalícia para Windows 11 Pro. Vínculo com conta Microsoft.",
+    "features": [
+      "Ativação online oficial",
+      "Atualizações vitalícias",
+      "Multilinguagem",
+      "Suporte Microsoft"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Office 365 (Conta 5TB)",
+    "price": "25,00",
+    "originalPrice": "50,00",
+    "inStock": true,
+    "onSale": true,
+    "image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
+    "description": "Conta Office 365 com 5TB de armazenamento no OneDrive e acesso a todos os apps Office.",
+    "features": [
+      "5TB no OneDrive",
+      "Word, Excel, PowerPoint",
+      "Instale em até 5 dispositivos",
+      "Apps sempre atualizados"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "YouTube Premium",
+    "price": "9,90",
+    "originalPrice": "20,90",
+    "inStock": false,
+    "onSale": false,
+    "image": "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=1974&auto=format&fit=crop",
+    "description": "YouTube sem anúncios e com reprodução em segundo plano. Invite para família.",
+    "features": [
+      "Zero anúncios",
+      "YouTube Music incluso",
+      "Download de vídeos",
+      "Background Play"
+    ]
+  },
+  {
+    "id": 999,
+    "name": "Produto de Teste (PIX R$ 1,00)",
+    "price": "1,00",
+    "originalPrice": "10,00",
+    "inStock": true,
+    "onSale": false,
+    "image": "https://placehold.co/600x400/111827/F59E0B?text=TESTE+PIX",
+    "description": "Produto exclusivo para testes de pagamento PIX.",
+    "features": [
+      "Valor Simbólico",
+      "Teste de Integração",
+      "Entrega Automática"
+    ]
+  }
+]

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
-import { products } from '../data/products';
 import { Link } from 'react-router-dom';
 
-const ProductsSection = () => {
+const ProductsSection = ({ products = [] }) => {
     const [filter, setFilter] = useState('Todos');
     const filters = ['Todos', 'Populares', 'Novidades', 'Ofertas'];
+
+    // If products is null/undefined during loading, default to empty array
+    const displayProducts = products || [];
 
     return (
         <section id="produtos" className="py-20 bg-background">
@@ -27,8 +29,8 @@ const ProductsSection = () => {
                                 key={f}
                                 onClick={() => setFilter(f)}
                                 className={`px-5 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap border ${filter === f
-                                        ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
-                                        : 'bg-surface border-border text-secondary hover:border-gray-700 hover:text-white'
+                                    ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+                                    : 'bg-surface border-border text-secondary hover:border-gray-700 hover:text-white'
                                     }`}
                             >
                                 {f}
@@ -38,7 +40,7 @@ const ProductsSection = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {products.map(product => (
+                    {displayProducts.map(product => (
                         <Link to={`/produto/${product.id}`} key={product.id}>
                             <ProductCard product={product} />
                         </Link>

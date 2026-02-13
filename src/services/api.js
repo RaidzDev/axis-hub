@@ -28,5 +28,60 @@ export const api = {
         });
         if (!response.ok) throw new Error('Falha ao gerar PIX');
         return response.json();
+    },
+
+    // --- Admin & Products ---
+
+    adminLogin: async (password) => {
+        const response = await fetch(`${api.baseUrl}/admin/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+        if (!response.ok) throw new Error('Falha no login');
+        return response.json();
+    },
+
+    getProducts: async () => {
+        const response = await fetch(`${api.baseUrl}/products`);
+        if (!response.ok) throw new Error('Erro ao buscar produtos');
+        return response.json();
+    },
+
+    addProduct: async (product, token) => {
+        const response = await fetch(`${api.baseUrl}/products`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(product)
+        });
+        if (!response.ok) throw new Error('Erro ao adicionar produto');
+        return response.json();
+    },
+
+    updateProduct: async (id, product, token) => {
+        const response = await fetch(`${api.baseUrl}/products/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(product)
+        });
+        if (!response.ok) throw new Error('Erro ao atualizar produto');
+        return response.json();
+    },
+
+    deleteProduct: async (id, token) => {
+        const response = await fetch(`${api.baseUrl}/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) throw new Error('Erro ao remover produto');
+        return response.json();
     }
 };
